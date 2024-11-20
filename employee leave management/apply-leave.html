@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave</title>
+    <style>
+        /* Reset and Base Styles */
+        * {   
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F7FA;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            border-radius: 5px;
+        }
+
+        /* Apply Leave Form Styles */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        form h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00246B;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            color: white;
+            background-color: #0056D2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #003a99;
+            transform: scale(1.05);
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-brand">LeaveFlow</div>
+            <div class="nav-menu">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="apply-leave.html" class="active">Apply for Leave</a>
+                <a href="leave-history.html">Leave History</a>
+                <a href="leave-approval.html">Manage Approvals</a>
+                <a href="attendance.html">Attendance</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <form id="applyLeaveForm">
+            <h2>Apply for Leave</h2>
+            <label for="leaveType">Leave Type:</label>
+            <select id="leaveType" required>
+                <option value="Annual">Annual</option>
+                <option value="Sick">Sick</option>
+                <option value="Casual">Casual</option>
+            </select>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById("applyLeaveForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            // Fetch leave type and dates
+            const leaveType = document.getElementById("leaveType").value;
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value;
+
+            // Check if leave is already applied
+            const leaveRequests = JSON.parse(localStorage.getItem("leaveRequests")) || [];
+            const alreadyApplied = leaveRequests.some(request => request.status === "Pending");
+
+            if (alreadyApplied) {
+                alert("You have already applied for leave. Please wait for approval before applying again.");
+                return;  // Stop the form submission
+            }
+
+            // If not already applied, submit the new leave request
+            leaveRequests.push({ leaveType, startDate, endDate, status: "Pending" });
+            localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+            alert("Leave request submitted!");
+        });
+    </script>
+</body>
+</html>

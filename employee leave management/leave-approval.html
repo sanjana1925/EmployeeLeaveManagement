@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Approval</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F7FA;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            border-radius: 5px;
+        }
+
+        /* Leave Approval Page Styles */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .approval-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .approval-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00246B;
+        }
+
+        .approval-card p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .approval-card .approval-details {
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-brand">LeaveFlow</div>
+            <div class="nav-menu">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="apply-leave.html">Apply for Leave</a>
+                <a href="leave-history.html">Leave History</a>
+                <a href="leave-approval.html" class="active">Leave Approval</a>
+                <a href="attendance.html">Attendance</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="approval-card">
+            <h2>Leave Approval Status</h2>
+            <div id="approvalStatus">
+                <p>Loading approval details...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to check the leave approval status and update the UI
+        function getLeaveApproval() {
+            const leaveRequests = JSON.parse(localStorage.getItem("leaveRequests")) || [];
+            const currentDate = new Date();
+
+            // Find the most recent leave request that is still pending
+            const pendingLeaveRequest = leaveRequests.find(request => request.status === "Pending");
+
+            if (!pendingLeaveRequest) {
+                document.getElementById("approvalStatus").innerHTML = `
+                    <p>No pending leave requests.</p>
+                `;
+            } else {
+                // Get leave type, start, and end dates
+                const { leaveType, startDate, endDate } = pendingLeaveRequest;
+                
+              
+                const approvalStatus = Math.random() > 0.5 ? 'Approved' : 'Denied'; // Simulate approval/denial
+
+                // Update leave request status in localStorage
+                pendingLeaveRequest.status = approvalStatus;
+                localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+
+                // Display the approval status
+                document.getElementById("approvalStatus").innerHTML = `
+                    <p>Leave Type: <strong>${leaveType}</strong></p>
+                    <p>Leave Start Date: <strong>${startDate}</strong></p>
+                    <p>Leave End Date: <strong>${endDate}</strong></p>
+                    <p>Status: <strong>${approvalStatus}</strong></p>
+                `;
+            }
+        }
+
+        // Load leave approval status when the page loads
+        window.onload = getLeaveApproval;
+    </script>
+</body>
+</html>

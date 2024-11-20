@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management System</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F4F7FA;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            color: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            color: white;
+        }
+
+        /* Dashboard Content Styles */
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #dashboard-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: #00246B;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        #leaveBalance {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0056D2;
+        }
+
+        nav ul {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        nav ul li {
+            margin-bottom: 12px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #0056D2;
+            font-size: 1.1rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #00246B;
+            transform: translateX(5px);
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 15px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                padding-left: 20px;
+            }
+
+            #dashboard-content {
+                padding: 30px;
+                max-width: 100%;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-brand">LeaveFlow</div>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="apply-leave.html">Apply for Leave</a>
+                <a href="leave-history.html">Leave History</a>
+                <a href="leave-approval.html">Manage Approvals</a>
+                <a href="attendance.html">Attendance</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="dashboard-content">
+            <h2>Welcome to Your Dashboard</h2>
+            <p>Here you can manage your leave balance and request leave when necessary.</p>
+            <p>Your leave balance: <span id="leaveBalance">15 days</span></p>
+            <nav>
+                <ul>
+                    <li><a href="apply-leave.html">Apply for Leave</a></li>
+                    <li><a href="leave-history.html">Leave History</a></li>
+                    <li><a href="leave-approval.html">Manage Approvals</a></li>
+                    <li><a href="attendance.html">Attendance</a></li>
+                </ul>
+            </nav>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Fetch leave balance from localStorage
+        const leaveBalance = JSON.parse(localStorage.getItem("leaveBalance")) || 15;
+        document.getElementById("leaveBalance").textContent = `${leaveBalance} days`;
+    </script>
+</body>
+</html>

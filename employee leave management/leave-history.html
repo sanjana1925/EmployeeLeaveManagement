@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave History</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F7FA;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            border-radius: 5px;
+        }
+
+        /* Leave History Page Styles */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .history-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .history-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00246B;
+        }
+
+        .history-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .history-table th, .history-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .history-table th {
+            background-color: #0056D2;
+            color: white;
+        }
+
+        .history-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .history-table td {
+            font-size: 1rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-brand">LeaveFlow</div>
+            <div class="nav-menu">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="apply-leave.html">Apply for Leave</a>
+                <a href="leave-history.html" class="active">Leave History</a>
+                <a href="leave-approval.html">Manage Approvals</a>
+                <a href="attendance.html">Attendance</a>
+        
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="history-card">
+            <h2>Your Leave History</h2>
+            <div id="leaveHistory">
+                <p>No leave taken yet</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to check the leave history and update UI
+        function getLeaveHistory() {
+            const leaveRequests = JSON.parse(localStorage.getItem("leaveRequests")) || [];
+            const leaveBalance = JSON.parse(localStorage.getItem("leaveBalance")) || 15;
+            const currentDate = new Date();
+            let leaveTaken = 0;
+
+            let leaveHistoryContent = '';
+
+            // Check if any leave has been taken within the last 15 days
+            const recentLeaveRequests = leaveRequests.filter(request => {
+                const leaveStartDate = new Date(request.startDate);
+                const leaveEndDate = new Date(request.endDate);
+                const daysDifference = (currentDate - leaveStartDate) / (1000 * 3600 * 24);
+
+                // Only include leaves within the last 15 days
+                return daysDifference <= 15;
+            });
+
+            if (recentLeaveRequests.length === 0) {
+                leaveHistoryContent = '<p>No leave taken yet</p>';
+            } else {
+                let tableContent = `
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                recentLeaveRequests.forEach(request => {
+                    tableContent += `
+                        <tr>
+                            <td>${request.leaveType}</td>
+                            <td>${request.startDate}</td>
+                            <td>${request.endDate}</td>
+                            <td>${request.status}</td>
+                        </tr>
+                    `;
+                });
+
+                tableContent += '</tbody></table>';
+                leaveHistoryContent = tableContent;
+            }
+
+            // Calculate remaining leave balance
+            const remainingLeave = leaveBalance - recentLeaveRequests.length;
+
+            // Display leave history and balance
+            document.getElementById("leaveHistory").innerHTML = `
+                ${leaveHistoryContent}
+                <p>Remaining Leave Balance: ${remainingLeave} days</p>
+            `;
+        }
+
+        // Load leave history when the page loads
+        window.onload = getLeaveHistory;
+    </script>
+</body>
+</html>

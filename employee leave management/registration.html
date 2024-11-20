@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration - LeaveFlow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F4F7FA;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      background-color: #00246B;
+      color: white;
+      width: 100%;
+      padding: 15px 0;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    main {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #0056D2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #003a99;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Employee Registration</h1>
+  </header>
+  <main>
+    <form id="registrationForm">
+      <label for="empId">Employee ID:</label>
+      <input type="text" id="empId" name="empId" placeholder="E.g., PI1234" required>
+      <span class="error" id="empIdError"></span>
+      
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+      <span class="error" id="nameError"></span>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <span class="error" id="emailError"></span>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <span class="error" id="passwordError"></span>
+      
+      <button type="submit">Register</button>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Clear previous errors
+      document.getElementById("empIdError").textContent = "";
+      document.getElementById("nameError").textContent = "";
+      document.getElementById("emailError").textContent = "";
+      document.getElementById("passwordError").textContent = "";
+
+      // Validate fields
+      const empId = document.getElementById("empId").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      let isValid = true;
+
+      // Employee ID Validation
+      if (!/^PI\d{4}$/.test(empId)) {
+        document.getElementById("empIdError").textContent = "Employee ID must start with 'PI' followed by 4 digits.";
+        isValid = false;
+      }
+
+      // Name Validation
+      if (!/^[A-Za-z\s]+$/.test(name)) {
+        document.getElementById("nameError").textContent = "Name should only contain letters.";
+        isValid = false;
+      }
+
+      // Email Validation
+      if (!/^[\w.+-]+@(gmail\.com|yahoo\.com|outlook\.com)$/.test(email)) {
+        document.getElementById("emailError").textContent = "Email must be a valid Gmail, Yahoo, or Outlook address.";
+        isValid = false;
+      }
+
+      // Password Validation
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(password)) {
+        document.getElementById("passwordError").textContent = 
+          "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a special character.";
+        isValid = false;
+      }
+
+      // If valid, store in localStorage
+      if (isValid) {
+        const user = { empId, name, email, password };
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        users.push(user);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        alert("Registration successful!");
+        window.location.href = "login.html"; // Redirect to login
+      }
+    });
+  </script>
+</body>
+</html>
+```

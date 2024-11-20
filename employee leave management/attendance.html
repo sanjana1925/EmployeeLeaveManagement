@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F7FA;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+   
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            border-radius: 5px;
+        }
+
+  
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calendar-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .calendar-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00246B;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .calendar div {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .calendar div.sunday {
+            background-color: #ffcccc; /* Highlight Sundays */
+        }
+
+        .calendar div.leave-taken {
+            background-color: #80C7E4; /* Leave days marked */
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar div.empty {
+            background-color: transparent;
+            cursor: default;
+        }
+
+        .calendar div:hover:not(.empty):not(.sunday) {
+            background-color: #ddd;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="nav-brand">LeaveFlow</div>
+            <div class="nav-menu">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="apply-leave.html">Apply for Leave</a>
+                <a href="leave-history.html">Leave History</a>
+                <a href="leave-approval.html">Leave Approval</a>
+                <a href="attendance.html" class="active">Attendance</a>
+             
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="calendar-container">
+            <h2>Attendance Calendar</h2>
+            <div id="calendar" class="calendar">
+                <!-- Calendar Days will be generated here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Generate Calendar for the current month and highlight Sundays and leave days
+        function generateCalendar() {
+            const currentDate = new Date();
+            const month = currentDate.getMonth(); // Current month
+            const year = currentDate.getFullYear(); // Current year
+
+            // Find the first day of the month and number of days in the month
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDay = firstDay.getDay(); // Day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+
+            const leaveRequests = JSON.parse(localStorage.getItem("leaveRequests")) || [];
+            const leaveDates = leaveRequests.map(request => {
+                const start = new Date(request.startDate);
+                const end = new Date(request.endDate);
+                const dates = [];
+                for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+                    dates.push(new Date(d));
+                }
+                return dates;
+            }).flat();
+
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = ''; // Clear previous calendar content
+
+            // Fill empty spaces before the 1st day
+            for (let i = 0; i < startDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('empty');
+                calendar.appendChild(emptyCell);
+            }
+
+            // Fill calendar days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDay = new Date(year, month, day);
+                const dayOfWeek = currentDay.getDay();
+                const dayDiv = document.createElement('div');
+
+                // Highlight Sundays as holidays
+                if (dayOfWeek === 0) {
+                    dayDiv.classList.add('sunday');
+                }
+
+                // Mark the leave taken days
+                if (leaveDates.some(date => date.getDate() === currentDay.getDate() && date.getMonth() === currentDay.getMonth())) {
+                    dayDiv.classList.add('leave-taken');
+                }
+
+                // Add day number
+                dayDiv.textContent = day;
+                calendar.appendChild(dayDiv);
+            }
+        }
+
+        // Initialize calendar on page load
+        window.onload = generateCalendar;
+    </script>
+</body>
+</html>

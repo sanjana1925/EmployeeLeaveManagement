@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeaveFlow - Employee Leave Management</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #F4F7FA;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #00246B;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a.active, .nav-menu a:hover {
+            background-color: #0056D2;
+            border-radius: 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(90deg, #0056D2, #00A8E8);
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #B85042;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(327, 100%, 41%);
+        }
+
+        .btn-secondary {
+            background-color: #00A8E8;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0056D2;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #F4F7FA;
+        }
+
+        .feature-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: #0056D2;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #00246B;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">LeaveFlow</div>
+        <div class="nav-menu">
+            <a href="index.html" class="active">Home</a>
+            <a href="login.html">Login</a>
+            <a href="registration.html">Register</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Welcome to LeaveFlow</h1>
+            <p>Streamline your leave management process with our easy-to-use system</p>
+            <div class="cta-buttons">
+                <a href="login.html" class="btn btn-primary">Login</a>
+                <a href="registration.html" class="btn btn-secondary">Register</a>
+            </div>
+        </div>
+    </main>
+
+    <section class="feature-grid">
+        <div class="feature-card">
+            <i class="icon-calendar">📅</i>
+            <h3>Easy Leave Application</h3>
+            <p>Apply for leave with just a few clicks</p>
+        </div>
+        <div class="feature-card">
+            <i class="icon-clock">⏰</i>
+            <h3>Real-time Tracking</h3>
+            <p>Track your leave balance and status</p>
+        </div>
+        <div class="feature-card">
+            <i class="icon-check">✅</i>
+            <h3>Quick Approval Process</h3>
+            <p>Fast and efficient approval workflow</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 LeaveFlow. All rights reserved.</p>
+    </footer>
+</body>
+</html>
